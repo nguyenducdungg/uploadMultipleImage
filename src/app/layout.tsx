@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(
-          "max-h-dvh overflow-hidden bg-background font-sans antialiased",
+          "max-h-dvh bg-background font-sans antialiased",
           fontSans.variable
         )}>{children}</body>
     </html>
