@@ -4,6 +4,7 @@ import axios from 'axios';
 import FileUpload from '@/components/Molecules/FileUpload';
 import UploadButton from '@/components/Molecules/UploadButton';
 import UploadedFile from '@/components/Organisms/UploadedFile';
+import Image from 'next/image';
 
 const Page: React.FC = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -82,30 +83,32 @@ const Page: React.FC = () => {
   };
 
   return (
-    <div className='flex justify-center'>
-      <div className="p-4 m-5 border xl:max-w-[1200px] sm:w-full border-gray-300">
+    <div>
+      <Image src={'https://appota.com/static/media/appota_w.16adc1b5.svg'} alt='logo' height={100} width={200} className='m-5'/>
+      <div className='flex justify-center'>
+        <div className="p-4 m-5 border xl:max-w-[1200px] sm:w-full border-gray-300">
+          <div className="flex items-center justify-center w-full">
+            <FileUpload handleFileChange={handleFileChange} refInput={refInput}/>
+          </div>
 
-        <div className="flex items-center justify-center w-full">
-          <FileUpload handleFileChange={handleFileChange} refInput={refInput}/>
-        </div>
+          <div className='flex justify-end gap-3 mt-2'>
+            <p className='text-green-500 font-medium'>Success: {successFiles.length}/{files.length}</p>
+            <p className='text-red-500'>Error: {errorFiles.length}/{files.length}</p>
+          </div>
 
-        <div className='flex justify-end gap-3 mt-2'>
-          <p className='text-green-500 font-medium'>Success: {successFiles.length}/{files.length}</p>
-          <p className='text-red-500'>Error: {errorFiles.length}/{files.length}</p>
-        </div>
+          {/* List of uploaded files start */}
+          <div className='overflow-y-auto max-h-[500px]'>
+            {files.map((file) => (
+              <UploadedFile key={file.name} file={file} progress={progress[file.name]} success={successFiles.includes(file)} error={errorFiles.includes(file)} handleRemove={handleRemove} uploading={uploading}/>
+            ))}
+          </div>
+          {/* List of uploaded files end */}
+          
+          <div className='flex justify-center'>
+            <UploadButton handleUpload={handleUpload} uploading={uploading} disable={files.length === 0} />
+          </div>
 
-        {/* List of uploaded files start */}
-        <div className='overflow-y-auto max-h-[500px]'>
-          {files.map((file) => (
-            <UploadedFile key={file.name} file={file} progress={progress[file.name]} success={successFiles.includes(file)} error={errorFiles.includes(file)} handleRemove={handleRemove} uploading={uploading}/>
-          ))}
         </div>
-        {/* List of uploaded files end */}
-        
-        <div className='flex justify-center'>
-          <UploadButton handleUpload={handleUpload} uploading={uploading} disable={files.length === 0} />
-        </div>
-
       </div>
     </div>
   );
